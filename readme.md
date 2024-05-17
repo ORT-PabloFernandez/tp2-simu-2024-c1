@@ -43,3 +43,15 @@ Si ya terminaste o son las 10:00 asegurate de seguir los siguientes pasos para l
 ## Listado de endpoint
 
 -GET /api/movies?pageSize=[pageSize]&page=[page]
+
+getMovieById
+http://localhost:3001/api/movies/573a1392f29313caabcd9950
+
+getWinnerMovies
+http://localhost:3001/api/movies/winners
+
+getMoviesByLanguage
+http://localhost:3001/api/movies/language/French
+
+getMoviesByFresh
+http://localhost:3001/api/movies/fresh

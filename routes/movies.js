@@ -31,10 +31,15 @@ router.get("/language/:language", async (req, res) => {
 });
 
 router.get("/fresh", async (req, res) => {
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 50;
+  try {
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const movies = await getMoviesByFresh(pageSize, page);
     res.json(movies);
+  } catch (error) {
+    console.error("Error fetching fresh movies:", error);
+    res.status(500).json({ error: "Failed to fetch fresh movies" });
+  }
 });
 
 
