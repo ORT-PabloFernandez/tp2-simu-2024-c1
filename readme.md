@@ -41,5 +41,23 @@ Si ya terminaste o son las 10:00 asegurate de seguir los siguientes pasos para l
 4. Realizar un pull request a mi repositorio
 
 ## Listado de endpoint
-
+getAllMovies:
 -GET /api/movies?pageSize=[pageSize]&page=[page]
+
+getMovie (por id):
+-GET /api/movies/{id}
+/api/movies/573a1391f29313caabcd7616
+
+getWinningMovies (peliculas ganadoras de al menos 1 premio):
+-GET /api/movies/awards/winners
+
+getMoviesByLanguage (peliculas filtradas por idioma):
+-GET /api/movies/language/{language}
+/api/movies/language/English?
+
+getMoviesByOrderTomatoes (peliculas ordenadas por calificacion)
+-GET /api/movies/order/tomatoes
+
+getUserCommentsMovie (comentarios del usuario)
+-GET /api/comments/user/{id}/comments
+/api/comments/user/5a9427648b0beebeb69579e7/comments
