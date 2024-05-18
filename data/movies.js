@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import getConnection from "./conn.js";
+import getConnectionMongo from "../helper/connection.js";
 
 const DATABASE = "sample_mflix";
 const MOVIES = "movies";
@@ -19,17 +20,57 @@ async function getAllMovies(pageSize, page) {
 
 const getMovieById = async (id) => {
     try {
-        const connectiondb = await getConnection();
-        if (!connectiondb) {
-            throw new Error("Connection failed");
-        }
-
-        const movie = await connectiondb
-            .db(DATABASE)
-            .collection(MOVIES)
-            .findOne({ _id: new ObjectId(id)});
+        const client = await getConnectionMongo(DATABASE, MOVIES);
+        const movie = client.findOne({ _id: new ObjectId(id) });
 
         return movie;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getMoviesSortedByFresh = async (pageSize, page) => {
+    try {
+        const client = await getConnectionMongo(DATABASE, MOVIES);
+        const movies = await client
+            .find({})
+            .sort({ "tomatoes.fresh": -1 })
+            .limit(pageSize)
+            .skip(pageSize * page)
+            .toArray();
+
+        return movies;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const filteredMovies = async (language, pageSize, page) => {
+    try {
+        const client = await getConnectionMongo(DATABASE, MOVIES);
+        const movies = await client
+            .find({ languages: language })
+            .limit(pageSize)
+            .skip(pageSize * page)
+            .toArray();
+
+        return movies;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getMoviesWithAtLeastOneAward = async (pageSize, page) => {
+    try {
+        const client = await getConnectionMongo(DATABASE, MOVIES);
+        const movies = await client
+            .find({ "awards.wins": { $gt: 0 } })
+            .project({ title: 1, poster: 1, plot: 1 })
+            .limit(pageSize)
+            .skip(pageSize * page)
+            .toArray();
+
+        return movies;
     } catch (error) {
         console.error(error);
     }
@@ -38,4 +79,7 @@ const getMovieById = async (id) => {
 export {
     getAllMovies,
     getMovieById,
+    getMoviesSortedByFresh,
+    filteredMovies,
+    getMoviesWithAtLeastOneAward,
 };
