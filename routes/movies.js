@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllMovies } from "../data/movies.js";
+import { getAllMovies, getMovieById, getAwardWinnerMovies } from "../data/movies.js";
 
 const router = express.Router();
 
@@ -9,5 +9,24 @@ router.get("/", async (req, res) => {
 
   res.json(await getAllMovies(pageSize, page));
 });
+
+router.get("/:id", async (req, res) => {
+  try {
+    const movie = await getMovieById(req.params.id);
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ message: "Pelicula no encontrada" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.get("/awardsWinners", async (req, res) =>{
+  res.json(await getAwardWinnerMovies());
+});
+
+
 
 export default router;
