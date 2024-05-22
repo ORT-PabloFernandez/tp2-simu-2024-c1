@@ -12,8 +12,6 @@ router.get("/:id", async (req, res) => {
     try {
       const user = await getUserById(req.params.id);
       if (user) {
-        console.log("gola");
-        //pido los comentarios
         const comments = await getCommentsByEmail(user.email);
         if(comments){
             let commentsWithMovies = []
