@@ -42,9 +42,9 @@ Si ya terminaste o son las 10:00 asegurate de seguir los siguientes pasos para l
 
 ## Listado de endpoint
 
-*MOVIES ROUTER*
+_MOVIES ROUTER_
 
-1. -GET /api/movies?pageSize=[pageSize]&page=[page]
+1. -URI '...PORT/api/movies?pageSize=[pageSize]&page=[page]'
 2. -GET MOVIES '...PORT/api/movies/'
 3. -GET MOVIE BY ID '...PORT/api/movies/:id'
 4. -GET MOVIES BY AWARDS '...PORT/api/movies/awards/:quantity'
@@ -52,11 +52,11 @@ Si ya terminaste o son las 10:00 asegurate de seguir los siguientes pasos para l
 6. -GET MOVIES BY FRESH RANKING '...PORT/api/movies/ranking'
 7. -GET COMMENTS BY USER ID '...PORT/api/movies/comments/user/:id'
 
-**USERS ROUTER*
+\*_USERS ROUTER_
 
 1. -GET USERS '...PORT/api/users'
 2. -GET USER BY ID '...PORT/api/users/:id'
 
-*COMMENTS ROUTER*
+_COMMENTS ROUTER_
 
 1. -GET COMMENTS '...PORT/api/comments'
