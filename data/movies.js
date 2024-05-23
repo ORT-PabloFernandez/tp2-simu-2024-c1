@@ -1,5 +1,7 @@
 import { ObjectId } from "mongodb";
 import getConnection from "./conn.js";
+import { getUserById } from "./users.js";
+import { getAllComments } from "./comments.js";
 
 const DATABASE = "sample_mflix";
 const MOVIES = "movies";
@@ -16,20 +18,31 @@ async function getAllMovies(pageSize, page) {
   return movies;
 }
 
+function isValidObjectId(id) {
+  return ObjectId.isValid(id) && (String)(new ObjectId(id)) === id;
+}
+
 async function getMovieById(id) {
-  const connectiondb = await getConnection();
-  const movie = await connectiondb
-    .db(DATABASE)
-    .collection(MOVIES)
-    .findOne({ _id: new ObjectId(id) });
+  try {
+    if (!isValidObjectId(id)) {
+      throw new Error("Invalid ID format");
+    }
 
-  if (!movie) {
-    throw new Error("Movie not found");
+    const connectiondb = await getConnection();
+    const movie = await connectiondb
+      .db(DATABASE)
+      .collection(MOVIES)
+      .findOne({ _id: new ObjectId(id) });
+
+    if (!movie) {
+      throw new Error("Movie not found");
+    }
+
+    return movie;
+  } catch (e) {
+    console.error(e)
+    throw e;
   }
-
-  console.log(movie);
-
-  return movie;
 }
 
 async function getMovieByAwards(qty) {
@@ -66,21 +79,24 @@ async function getMovieByLanguage(language) {
   return movie;
 }
 
-async function getMovieByFreshRanking() {
-  try {
-    const movies = await getAllMovies();
-
-    const sortedMovies = movies.sort((a, b) => b.tomatoes.fresh - a.tomatoes.fresh);
-
-    if (!sortedMovies) {
-      throw new Error("Movies not found");
-    }
-
-    return sortedMovies;
-  } catch (error) {
-    console.error("Error fetching movies by fresh ranking:", error);
-    throw error;
-  }
+async function getMoviesByFreshRanking(pageSize, page) {
+  const connectiondb = await getConnection();
+  const movies = await connectiondb
+    .db(DATABASE)
+    .collection(MOVIES)
+    .find({ 'tomatoes.fresh': { $exists: true } })
+    .sort({ 'tomatoes.fresh': -1 })
+    .limit(pageSize)
+    .skip(pageSize * page)
+    .toArray();
+  return movies;
 }
 
-export { getAllMovies, getMovieById, getMovieByAwards, getMovieByLanguage, getMovieByFreshRanking };
+async function getUserComments(id) {
+  const user = await getUserById(id);
+  const comments = await getAllComments();
+
+  return comments.filter((comment) => comment.name === user.name);
+}
+
+export { getAllMovies, getMovieById, getMovieByAwards, getMovieByLanguage, getMoviesByFreshRanking, getUserComments };

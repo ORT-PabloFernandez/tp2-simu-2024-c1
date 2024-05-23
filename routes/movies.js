@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllMovies, getMovieById, getMovieByAwards, getMovieByLanguage, getMovieByFreshRanking } from "../data/movies.js";
+import { getAllMovies, getMovieById, getMovieByAwards, getMovieByLanguage, getMoviesByFreshRanking, getUserComments } from "../data/movies.js";
 
 const router = express.Router();
 
@@ -10,8 +10,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  res.json(await getMovieById(id));
+  try {
+    const id = req.params.id;
+    const movie = await getMovieById(id);
+    res.json(movie);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 router.get("/awards/:qty?", async (req, res) => {
@@ -36,10 +41,22 @@ router.get("/languages/:language", async (req, res) => {
   res.json(await getMovieByLanguage(language));
 })
 
-router.get("/ranking/", async (req, res) => {
+router.get("/ranking", async (req, res) => {
   try {
-    res.json(await getMovieByFreshRanking());
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+
+    res.json(await getMoviesByFreshRanking(pageSize, page));
   } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+router.get("/comments/user/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    res.send(await getUserComments(id))
+  } catch (e) {
     res.status(500).send({ message: err.message });
   }
 })
