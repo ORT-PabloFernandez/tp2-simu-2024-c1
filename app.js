@@ -4,7 +4,9 @@ import moviesRouter from "./routes/movies.js";
 
 const PORT = process.env.PORT;
 const app = express();
+
 app.use(express.json());
+
 app.use("/api/movies", moviesRouter);
 
 app.listen(PORT, () => {
