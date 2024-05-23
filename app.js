@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import moviesRouter from "./routes/movies.js";
 
+console.log("llegooo");
 const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());

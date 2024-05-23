@@ -2,7 +2,7 @@
   "name": "tp2-simu-2024-c1",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
+  "description": "Es tu primer día en [tecnoshare.com](http://tecnoshare.com) luego de un intenso entrenamiento de 10 semanas por fin tenes la oportunidad de mostrar lo que aprendiste, y tu potencial como desarrollador backend en nodejs con express y mongodb.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,6 +15,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongodb": "^6.6.2"
+    "mongodb": "^6.6.2",
+    "nodemon": "^3.1.0"
   }
 }
