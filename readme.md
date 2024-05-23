@@ -52,7 +52,7 @@ _MOVIES ROUTER_
 6. -GET MOVIES BY FRESH RANKING '...PORT/api/movies/ranking'
 7. -GET COMMENTS BY USER ID '...PORT/api/movies/comments/user/:id'
 
-\*_USERS ROUTER_
+_USERS ROUTER_
 
 1. -GET USERS '...PORT/api/users'
 2. -GET USER BY ID '...PORT/api/users/:id'
