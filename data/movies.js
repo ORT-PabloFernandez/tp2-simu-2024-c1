@@ -1,9 +1,10 @@
+import { Route } from "express";
 import getConnection from "./conn.js";
 import { ObjectId } from "mongodb";
 const DATABASE = "sample_mflix";
 const MOVIES = "movies";
 
-async function getAllMovies(pageSize, page) {
+export async function getAllMovies(pageSize, page) {
   const connectiondb = await getConnection();
   const movies = await connectiondb
     .db(DATABASE)
@@ -15,7 +16,7 @@ async function getAllMovies(pageSize, page) {
   return movies;
 }
 
-async function getMovie(id) {
+export async function getMovie(id) {
   const connectiondb = await getConnection();
   const movie = await connectiondb
     .db(DATABASE)
@@ -24,7 +25,7 @@ async function getMovie(id) {
   return movie;
 }
 
-async function getAwardWinningMovies() {
+export async function getAwardWinningMovies() {
   const connectiondb = await getConnection();
   const movies = await connectiondb
     .db(DATABASE)
@@ -35,7 +36,7 @@ async function getAwardWinningMovies() {
   return movies;
 }
 
-async function getMoviesByLanguage(language, pageSize, page) {
+export async function getMoviesByLanguage(language, pageSize, page) {
   const connectiondb = await getConnection();
   const movies = await connectiondb
     .db(DATABASE)
@@ -47,7 +48,7 @@ async function getMoviesByLanguage(language, pageSize, page) {
   return movies;
 }
 
-async function getAllMoviesByFreshRating() {
+export async function getAllMoviesByFreshRating() {
   const connectiondb = await getConnection();
   const movies = await connectiondb
     .db(DATABASE)
@@ -57,5 +58,3 @@ async function getAllMoviesByFreshRating() {
     .toArray();
   return movies;
 }
-
-export { getAllMovies, getMovie, getAwardWinningMovies, getMoviesByLanguage, getAllMoviesByFreshRating };

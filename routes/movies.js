@@ -9,38 +9,63 @@ import {
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const pageSize = req.query.pageSize
-    ? parseInt(req.query.pageSize)
-    : 0;
-  const page = req.query.page ? parseInt(req.query.page) : 0;
-
-  res.json(await getAllMovies(pageSize, page));
-});
-
-router.get("/:id", async (req, res) => {
-  const movie = await getMovie(req.params.id);
-  res.json(movie);
+router.get("/language", async (req, res) => {
+  try {
+    const language = req.query.lang;
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const movies = await getMoviesByLanguage(language, pageSize, page);
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while retrieving movies by language.' });
+  }
 });
 
 router.get("/awards/winners", async (req, res) => {
-  const awardWinners = await getAwardWinningMovies();
-  res.json(awardWinners);
-});
-
-router.get("/language/:lang", async (req, res) => {
-  const language = req.params.lang;
-  const pageSize = req.query.pageSize
-    ? parseInt(req.query.pageSize)
-    : 0;
-  const page = req.query.page ? parseInt(req.query.page) : 0;
-  const movies = await getMoviesByLanguage(language, pageSize, page);
-  res.json(movies);
+  try {
+    const awardWinners = await getAwardWinningMovies();
+    res.json(awardWinners);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while retrieving award-winning movies.' });
+  }
 });
 
 router.get("/ranking/fresh/all", async (req, res) => {
-  const movies = await getAllMoviesByFreshRating();
-  res.json(movies);
+  try {
+    const movies = await getAllMoviesByFreshRating();
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while retrieving movies by fresh rating.' });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const movie = await getMovie(req.params.id);
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ message: 'Movie not found.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while retrieving the movie.' });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0;
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const movies = await getAllMovies(pageSize, page);
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while retrieving movies.' });
+  }
 });
 
 export default router;
