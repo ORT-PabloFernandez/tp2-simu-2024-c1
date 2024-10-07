@@ -13,8 +13,10 @@
   "author": "Pablo Fernandez",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mongodb": "^6.6.2"
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.9.0"
   }
 }
