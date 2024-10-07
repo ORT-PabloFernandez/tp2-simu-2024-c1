@@ -48,6 +48,20 @@ export async function getMoviesByLanguage(language, pageSize, page) {
 }
 
 
+export async function getMoviesByFreshScore(pageSize, page) {
+  const connectiondb = await getConnection();
+  const movies = await connectiondb
+    .db(DATABASE)
+    .collection(MOVIES)
+    .find({})
+    .sort({ "tomatoes.fresh": -1 }) // Ordena de mayor a menor por el puntaje fresh
+    .limit(pageSize)
+    .skip(pageSize * page)
+    .toArray();
+  return movies;
+}
+
+
 // Este se creo por un error que arrojaba el de ID. A modo de Test
 export async function getMovieByTitle(title) {
   const connectiondb = await getConnection();
